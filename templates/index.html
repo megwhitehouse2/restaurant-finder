@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Just Eat Restaurant Finder</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f5f5f0; color: #1a1a1a; }
+    header { background: #ff8000; padding: 2rem; text-align: center; }
+    header h1 { color: white; font-size: 1.8rem; }
+    header p { color: rgba(255,255,255,0.85); margin-top: 0.4rem; }
+    .search { background: white; padding: 1.25rem 2rem; display: flex; justify-content: center; border-bottom: 1px solid #eee; }
+    .search form { display: flex; gap: 0.75rem; width: 100%; max-width: 540px; }
+    .search input { flex: 1; padding: 0.65rem 1rem; border: 1.5px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    .search input:focus { outline: none; border-color: #ff8000; }
+    .search button { padding: 0.65rem 1.5rem; background: #ff8000; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    .search button:hover { background: #e07000; }
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+    .results-header { font-size: 0.95rem; color: #666; margin-bottom: 1.25rem; }
+    .results-header span { font-weight: 600; color: #1a1a1a; }
+    .error { background: #fff3f3; border: 1px solid #f5c6c6; border-radius: 10px; padding: 1rem; color: #c0392b; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .card { background: white; border-radius: 12px; border: 1px solid #eee; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .card-name { font-size: 1.05rem; font-weight: 700; }
+    .rating { font-size: 0.9rem; color: #ff8000; font-weight: 600; }
+    .cuisines { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag { background: #fff4e6; color: #b35a00; font-size: 0.75rem; padding: 3px 9px; border-radius: 20px; }
+    .address { font-size: 0.82rem; color: #888; margin-top: auto; padding-top: 0.5rem; border-top: 1px solid #f0f0f0; }
+    .empty { text-align: center; padding: 4rem; color: #999; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Restaurant Finder</h1>
+  <p>Enter a UK postcode to get started</p>
+</header>
+
+<div class="search">
+  <form method="POST">
+    <input type="text" name="postcode" placeholder="e.g. EC4M 7RF" value="{{ postcode }}" autocomplete="off" autofocus />
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+<main>
+  {% if error %}
+    <div class="error">{{ error }}</div>
+
+  {% elif restaurants %}
+    <p class="results-header">
+      Showing <span>{{ restaurants|length }} restaurants</span>
+      {% if area %} near <span>{{ area }}</span>{% endif %}
+    </p>
+    <div class="grid">
+      {% for r in restaurants %}
+      <div class="card">
+        <div class="card-name">{{ r.name }}</div>
+        <div class="rating">
+          ★ {{ r.rating if r.rating else "No rating" }}
+        </div>
+        {% if r.cuisines %}
+        <div class="cuisines">
+          {% for cuisine in r.cuisines[:4] %}
+            <span class="tag">{{ cuisine }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <div class="address">{{ r.address }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <div class="empty">
+      <p>Enter a UK postcode above to find nearby restaurants</p>
+    </div>
+  {% endif %}
+</main>
+
+</body>
+</html>
