@@ -36,9 +36,9 @@ Enter any UK postcode (e.g. `EC4M 7RF`) and hit Search.
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ## Implementation
 In my code, I need to:
-7.  Check `API` response structure to understand the structure of what is being returned and why
-8.  Identify which of these fields map to the requirements (name, rating as a number, cuisine, address) with a limit of 10 restaurants returned
-9.  Map data flow from postcode input to display
+1.  Check `API` response structure to understand the structure of what is being returned and why
+2.  Identify which of these fields map to the requirements (name, rating as a number, cuisine, address) with a limit of 10 restaurants returned
+3.  Map data flow from postcode input to display
 
 ### Assumptions
 - Endpoint returns restaurant objects so no type filtering beyond limiting to 10 was needed
